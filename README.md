@@ -100,3 +100,57 @@ Before running this project, ensure you have the following installed:
    argocd login localhost:8080
    ```
    Use `admin` as the username and the password retrieved in the previous step.
+
+## ✅ Evaluation
+
+### Install kubeconform
+
+Install kubeconform to validate Kubernetes manifests:
+
+- **macOS**: `brew install kubeconform`
+- **Linux**: Download from [kubeconform releases](https://github.com/yannh/kubeconform/releases/latest)
+- **Windows**: Download from [kubeconform releases](https://github.com/yannh/kubeconform/releases/latest)
+
+### Run kubeconform
+
+Run kubeconform against the apps directory in strict mode:
+
+```bash
+kubeconform -strict apps/
+```
+
+This will validate all Kubernetes manifests in the `apps/` directory against the official Kubernetes OpenAPI schemas, ensuring they conform to Kubernetes API specifications.
+
+### Install kube-score
+
+Install kube-score to analyze Kubernetes manifests for best practices and security issues:
+
+- **macOS**: `brew install kube-score`
+- **Linux**: Download from [kube-score releases](https://github.com/zegl/kube-score/releases/latest)
+- **Windows**: Download from [kube-score releases](https://github.com/zegl/kube-score/releases/latest)
+
+### Run kube-score
+
+Run kube-score against your YAML files to check for best practices, security issues, and resource optimization:
+
+```bash
+# Score all YAML files recursively using glob pattern
+kube-score score apps/**/*.yaml
+
+# Score all YAML files recursively using find
+find apps/ -name "*.yaml" -o -name "*.yml" | xargs kube-score score
+
+# Score a specific file
+kube-score score apps/base/myapp/deployment.yaml
+
+# Score multiple specific files
+kube-score score apps/base/myapp/*.yaml
+```
+
+**Note:** kube-score requires file paths, not directories. Use glob patterns (`**/*.yaml`) or `find` with `xargs` to score multiple files.
+
+kube-score will analyze your manifests and provide recommendations for:
+- Security best practices (security contexts, capabilities, etc.)
+- Resource management (requests, limits, probes)
+- High availability (PodDisruptionBudgets, anti-affinity)
+- Network policies and service configurations

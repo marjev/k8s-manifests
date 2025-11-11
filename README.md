@@ -39,3 +39,64 @@ This repository uses a GitOps structure, leveraging Kustomize's "base and overla
     * **`/clusters/dev`**: Contains Argo CD manifests that point to `apps/dev` and `infrastructure/dev` and sync them to your **development cluster**.
     * **`/clusters/staging`**: Points to the `staging` overlays for deployment to the **staging cluster**.
     * **`/clusters/production`**: Points to the `production` overlays for deployment to the **production cluster**.
+
+## 🚀 Getting Started
+
+### Requirements
+
+Before running this project, ensure you have the following installed:
+
+- **Docker**: Install Docker Desktop or Docker Engine
+- **Minikube**: Download and install Minikube
+- **kubectl**: Install the kubectl CLI tool
+
+### Setup
+
+1. **Start Minikube with Docker as a driver**:
+   ```bash
+   minikube start --driver=docker
+   ```
+
+2. **Create a namespace**:
+   ```bash
+   kubectl create namespace argocd
+   ```
+
+3. **Install Argo CD using manifests**:
+   ```bash
+   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+   ```
+
+4. **Apply the manifest**:
+   ```bash
+   kubectl apply -f <path-to-your-manifests>
+   ```
+
+5. **Verify Argo CD installation**:
+   ```bash
+   kubectl get pods -n argocd
+   ```
+   Wait until all pods are in `Running` state.
+
+6. **Install Argo CD CLI**:
+   - **macOS**: `brew install argocd`
+   - **Linux**: Download from [Argo CD releases](https://github.com/argoproj/argo-cd/releases/latest)
+   - **Windows**: Download from [Argo CD releases](https://github.com/argoproj/argo-cd/releases/latest)
+
+### Access Argo CD Server
+
+1. **Set up port forwarding**:
+   ```bash
+   kubectl port-forward svc/argocd-server -n argocd 8080:443
+   ```
+
+2. **Retrieve the initial admin password**:
+   ```bash
+   kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+   ```
+
+3. **Login with Argo CD CLI**:
+   ```bash
+   argocd login localhost:8080
+   ```
+   Use `admin` as the username and the password retrieved in the previous step.

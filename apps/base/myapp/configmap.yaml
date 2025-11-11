@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-config
+# --- CONFIGURATION DATA ---
+#
+# TODO: Add application configuration data here.
+# This ConfigMap is required by the 'my-app' deployment
+# and must be populated with key-value pairs.
+#
+data: {}

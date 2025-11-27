@@ -31,6 +31,9 @@ spec:
           emptyDir: {}
         - name: nginx-run
           emptyDir: {}
+        - name: myapp-config-volume
+          configMap:
+            name: myapp-config
       containers:
         - name: myapp-container
           image: nginx:1.22
@@ -39,13 +42,12 @@ spec:
             - name: myapp-config-volume
               mountPath: /etc/myapp/config
               readOnly: true
-          ports:
-            - containerPort: 8080
-          volumeMounts:
             - name: nginx-cache
               mountPath: /var/cache/nginx
             - name: nginx-run
               mountPath: /var/run
+          ports:
+            - containerPort: 8080
           readinessProbe:
             httpGet:
               path: /
@@ -86,7 +88,3 @@ spec:
               memory: "128Mi"
               cpu: "250m"
               ephemeral-storage: "200Mi"
-      volumes:
-        - name: myapp-config-volume
-          configMap:
-            - name: myapp-config

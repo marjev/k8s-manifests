@@ -35,6 +35,10 @@ spec:
         - name: myapp-container
           image: nginx:1.22
           imagePullPolicy: Always
+          volumeMounts:
+            - name: myapp-config-volume
+              mountPath: /etc/myapp/config
+              readOnly: true
           ports:
             - containerPort: 8080
           volumeMounts:
@@ -82,3 +86,7 @@ spec:
               memory: "128Mi"
               cpu: "250m"
               ephemeral-storage: "200Mi"
+      volumes:
+        - name: myapp-config-volume
+          configMap:
+            - name: myapp-config

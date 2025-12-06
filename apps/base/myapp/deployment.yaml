@@ -47,25 +47,25 @@ spec:
             - name: nginx-run
               mountPath: /var/run
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           readinessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 3
             successThreshold: 1
             failureThreshold: 3
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 8080
-          #   initialDelaySeconds: 20
-          #   periodSeconds: 20
-          #   timeoutSeconds: 3
-          #   successThreshold: 1
-          #   failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 20
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
           securityContext:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
